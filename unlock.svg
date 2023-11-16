@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   height="50"
+   width="50"
+   version="1.1"
+   id="Layer_1"
+   viewBox="0 0 20.625 20.625"
+   xml:space="preserve"
+   sodipodi:docname="unlock.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs7">
+	
+</defs><sodipodi:namedview
+   id="namedview5"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="10.27"
+   inkscape:cx="24.440117"
+   inkscape:cy="32.911392"
+   inkscape:window-width="3770"
+   inkscape:window-height="2091"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1"
+   showguides="false" />
+<path
+   id="XMLID_510_"
+   d="M 1.8750002,8.1249998 H 0.93750005 C 0.41975003,8.1249998 0,8.5447498 0,9.0624999 V 19.6875 c 0,0.517751 0.41975003,0.9375 0.93750005,0.9375 H 13.4375 c 0.517751,0 0.9375,-0.419749 0.9375,-0.9375 V 9.0624999 c 0,-0.5177501 -0.419749,-0.9375001 -0.9375,-0.9375001 H 12.500001 M 8.1250004,14.686625 V 15.9375 c 0,0.51775 -0.41975,0.937501 -0.9375,0.937501 -0.51775,0 -0.9375001,-0.419751 -0.9375001,-0.937501 v -1.250875 c -0.37925,-0.285312 -0.6249999,-0.739 -0.6249999,-1.249125 0,-0.861563 0.7009375,-1.562501 1.5625,-1.562501 0.8615625,0 1.5625,0.700938 1.5625,1.562501 0,0.510125 -0.2457499,0.963813 -0.625,1.249125 z"
+   sodipodi:nodetypes="cssssssssccssscsssc"
+   style="stroke-width:0.0625;fill:#ffffff;fill-opacity:1" /><path
+   id="XMLID_510_-3"
+   d="m 10,8.139353 c 1.875,0 8.75,0 10.625,0 V 5.3268532 C 20.625,2.3975408 18.241813,0.01435321 15.312499,0.01435321 12.383188,0.01435321 10,2.3975408 10,5.3268532 v 2.2425417 m 1.875,-2.2425417 c 0,-1.8954376 1.542062,-3.4374998 3.437499,-3.4374998 1.895439,0 3.437501,1.5420622 3.437501,3.4374998 V 8.139353 h -6.875 z"
+   sodipodi:nodetypes="ccssscsssccs"
+   style="stroke-width:0.0625;fill:#ffffff;fill-opacity:1" />
+</svg>

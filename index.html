@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Lock and unlock</title>
+    <meta name="title" content="Forty Two (typed)">
+    <meta name="description" content="This contract will lock up some tokens that can only be unlocked providing 42 as typed redeemer and datum.. A GameChanger Wallet Dapp Demo. https://gamechanger.finance/">
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#6d41a1" />
+    <script src="lock_script.js"></script>  
+    <script src="unlock_script.js"></script>  
+    <script src="gc_app.js"></script>  
+    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="box">
+        <h1>Lock tokens</h1>
+        <p><i>This contract will lock up some tokens that can only be unlocked providing a number as typed redeemer and datum.. A GameChanger Wallet Dapp Demo. https://gamechanger.finance/</i></p>
+         
+            <div id="dappConnectorBox">
+                
+                <a target="_blank" href="#" id="lockBtn" class="button a-unstyled">
+                    <img src="lock.svg"></img> Loading....
+                </a>
+            </div>
+
+            <div id="dappConnectorBox">
+                <a target="_blank" href="#" id="unlockBtn" class="button a-unstyled">
+                    Loading....
+                </a>
+            </div>
+
+        <pre id="errorBox"  class="errors"></pre>
+        <pre id="resultBox" class="console">Results will appear here after you connect with the wallet</pre>
+    </div>
+</body>
+
+</html>
