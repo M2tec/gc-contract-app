@@ -78,6 +78,21 @@ a:active {
     gap:10px;
 }
 
+.connect {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 250px !important;
+    height: 70px !important;
+
+}
+
+#txHashInput {
+    margin-top: 20px;
+    grid-column-start: 1;
+    grid-column-end:3;
+}
+
 .flexrow {
     display: flex;
     justify-content: center;

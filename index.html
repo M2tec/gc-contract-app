@@ -18,6 +18,8 @@
 </head>
 
 <body>
+    <button class="button connect">Connect</button>
+
     <div class="box">
         <h1>Lock tokens</h1>
         <p><i>This contract will lock up some tokens that can only be unlocked providing a number as typed redeemer and
@@ -28,7 +30,8 @@
                 onclick="window.open('https://beta-preprod-wallet.gamechanger.finance'), '_blank'">Loading...</button>
             <input type="text" id="lockInput" class="amountInput" placeholder="Lock number" onchange="main()">
 
-
+            <input type="text" id="txHashInput" class="amountInput" placeholder="txHash to unlock" onchange="main()">
+            
             <button class="button" id="unlockBtn"
                 onclick="window.open('https://beta-preprod-wallet.gamechanger.finance'), '_blank'">Loading...</button>
             <input type="text" id="unlockInput" class="amountInput" placeholder="Unlock number" onchange="main()">

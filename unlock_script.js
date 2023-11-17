@@ -1,7 +1,7 @@
 let unlock_script = {
     "type": "script",
-    "title": "Forty Two (typed)",
-    "description": "This contract will lock up some tokens that can only be unlocked providing 42 as typed redeemer and datum.. A GameChanger Wallet Dapp Demo. https://gamechanger.finance/",
+    "title": "Unlock script",
+    "description": "This contract will lock up some tokens that can only be unlocked providing number as typed redeemer.",
     "exportAs": "FortyTwoTypedDemo",
     "return": {
         "mode": "last"
@@ -10,22 +10,6 @@ let unlock_script = {
         "dependencies": {
             "type": "script",
             "run": {
-                "datum": {
-                    "type": "plutusData",
-                    "data": {
-                        "fromJSON": {
-                            "schema": 1,
-                            "obj": {
-                                "constructor": 0,
-                                "fields": [
-                                    {
-                                        "int": 42
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
                 "redeemer": {
                     "type": "plutusData",
                     "data": {
@@ -66,11 +50,10 @@ let unlock_script = {
         "buildUnlock": {
             "type": "buildTx",
             "name": "built-unlock",
-            "parentTxHash": "{get('cache.buildLock.txHash')}",
             "tx": {
                 "inputs": [
                     {
-                        "txHash": "{get('cache.buildLock.txHash')}",
+                        "txHash": "hash",
                         "index": 0,
                         "idPattern": "locked-input"
                     }
@@ -86,9 +69,6 @@ let unlock_script = {
                         "consumers": [
                             {
                                 "scriptHashHex": "{get('cache.dependencies.contract.scriptHashHex')}",
-                                "datum": {
-                                    "dataHex": "{get('cache.dependencies.datum.dataHex')}"
-                                },
                                 "redeemer": {
                                     "dataHex": "{get('cache.dependencies.redeemer.dataHex')}",
                                     "type": "spend",

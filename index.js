@@ -20,7 +20,8 @@ async function main() {
 
     const lockInput = document.getElementById("lockInput")
     const unlockInput = document.getElementById("unlockInput")
-
+    const txHashInput = document.getElementById("txHashInput")
+   
     async function updateUI() {
         error="";
         actionUrl_lock="";
@@ -28,8 +29,14 @@ async function main() {
         actionUrl_unlock="";
 
 
-        lockNumber = parseInt(lockInput.value)
-        lock_script.run.dependencies.run.datum.data.fromJSON.obj.fields[0].int = lockNumber
+        lockNumber = parseInt(lockInput.value);
+        lock_script.run.dependencies.run.datum.data.fromJSON.obj.fields[0].int = lockNumber;
+
+        unlockNumber = parseInt(lockInput.value);
+        unlock_script.run.dependencies.run.redeemer.data.fromJSON.obj.fields[0].int = unlockNumber;
+
+        txHash = txHashInput.value;
+        unlock_script.run.buildUnlock.tx.inputs[0].txHash = txHash;
         // GameChanger Wallet support arbitrary data returning from script execution, encoded in a redirect URL
         // Head to http:// localhost:3000/doc/api/v2/api.html#returnURLPattern to learn ways how to customize this URL
 
