@@ -7,16 +7,15 @@ async function main() {
 
     // GameChanger Wallet is pure Web3, zero backend procesing of user data. 
     // Dapp connector links are fully processed on end-user browsers.
-    const gcApiUrl    = "https:// beta-wallet.gamechanger.finance/api/2/run/";
+    const gcApiUrl    = "https://beta-wallet.gamechanger.finance/api/2/run/";
     const currentUrl  = window.location.href;
 
     // UI components:
     const connectForm = document.getElementById("dappConnectorBox");
-    const lockButton   = document.getElementById("lockBtn");
     const unlockButton   = document.getElementById("unlockBtn");    
     const errorsBox   = document.getElementById("errorBox");
     const resultsBox  = document.getElementById("resultBox");
-
+    const lockButton   = document.getElementById("lockBtn");
 
     async function updateUI() {
         error="";
@@ -56,10 +55,10 @@ async function main() {
         }
         if(actionUrl_lock){
             errorBox.innerHTML="";
-            lockButton.href=actionUrl_lock;
+            lockAction = "window.open('" + actionUrl_lock + "'), '_blank'"
+            lockButton.setAttribute("onclick", lockAction)
             lockButton.innerHTML = `<img style="height: 20px" src="lock.svg"></img> Lock`;
         }else{
-            lockButton.href      = '#';
             lockButton.innerHTML = "Loading...";
         }
 
@@ -76,7 +75,8 @@ async function main() {
 
         if(actionUrl_unlock){
             errorBox.innerHTML="";
-            unlockButton.href=actionUrl_unlock;
+            unlockAction = "window.open('" + actionUrl_unlock + "'), '_blank'"
+            unlockButton.setAttribute("onclick", unlockAction)
             unlockButton.innerHTML = `<img style="height: 20px" src="unlock.svg"></img> Unlock`;
         }else{
             unlockButton.href      = '#';

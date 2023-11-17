@@ -22,6 +22,18 @@ body {
     max-width: 600px;
 }
 
+input[type=text] {
+    width: auto;
+    padding: 12px 20px;
+    border-radius: 5px;
+    border: thin solid #000000; 
+    background-color: rgb(30, 30, 30);
+    color:rgb(255, 255, 255);
+    font-size: large;
+    font-weight: bold;
+  }
+
+
 a:link {
     color: rgb(174, 47, 174);
 }
@@ -60,6 +72,12 @@ a:active {
     inset  0 32px 32px rgba(0,0,0,0.15);
 }
 
+#dappConnectorBox {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap:10px;
+}
+
 .flexrow {
     display: flex;
     justify-content: center;
@@ -80,11 +98,11 @@ form{
 .a-unstyled:active { color: inherit;text-decoration: none; }
 .button {
     display:inline-block;
-    background-color: #181818;
+    background-color:#1b1424;
     color: rgb(222, 222, 222);
     border: thin solid white;
     width: 100%;
-    margin: 10px 0px;
+    height: 100%;
     padding-top: 20px;
     padding-bottom: 20px;
     font-size: 20px;
@@ -96,7 +114,7 @@ form{
       0 4px 4px rgba(0,0,0,0.2), 
       0 8px 8px rgba(0,0,0,0.2), 
       0 16px 16px rgba(0,0,0,0.11);
-    background-color:#734cad60;
+
 }
 .button:hover {
     background:linear-gradient(to bottom, #734cad 5%, #644b8a 100%);
