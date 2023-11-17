@@ -7,21 +7,29 @@ async function main() {
 
     // GameChanger Wallet is pure Web3, zero backend procesing of user data. 
     // Dapp connector links are fully processed on end-user browsers.
-    const gcApiUrl    = "https://beta-wallet.gamechanger.finance/api/2/run/";
+    const gcApiUrl    = "https://beta-preprod-wallet.gamechanger.finance/api/2/run/";
     const currentUrl  = window.location.href;
 
     // UI components:
     const connectForm = document.getElementById("dappConnectorBox");
-    const unlockButton   = document.getElementById("unlockBtn");    
     const errorsBox   = document.getElementById("errorBox");
     const resultsBox  = document.getElementById("resultBox");
+    
     const lockButton   = document.getElementById("lockBtn");
+    const unlockButton   = document.getElementById("unlockBtn");    
+
+    const lockInput = document.getElementById("lockInput")
+    const unlockInput = document.getElementById("unlockInput")
 
     async function updateUI() {
         error="";
         actionUrl_lock="";
 
         actionUrl_unlock="";
+
+
+        lockNumber = parseInt(lockInput.value)
+        lock_script.run.dependencies.run.datum.data.fromJSON.obj.fields[0].int = lockNumber
         // GameChanger Wallet support arbitrary data returning from script execution, encoded in a redirect URL
         // Head to http:// localhost:3000/doc/api/v2/api.html#returnURLPattern to learn ways how to customize this URL
 
@@ -82,7 +90,6 @@ async function main() {
             unlockButton.href      = '#';
             unlockButton.innerHTML = "Loading...";
         }
-
 
         if(resultObj){
             resultsBox.innerHTML=JSON.stringify(resultObj,null,2);

@@ -2,7 +2,7 @@ let lock_script = {
     "type": "script",
     "title": "Forty Two (typed)",
     "description": "This contract will lock up some tokens that can only be unlocked providing 42 as typed redeemer and datum.. A GameChanger Wallet Dapp Demo. https://gamechanger.finance/",
-    "exportAs": "FortyTwoTypedDemo",
+    "exportAs": "Lock_Demo",
     "return": {
         "mode": "last"
     },
