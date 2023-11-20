@@ -31,7 +31,14 @@ async function main() {
         actionUrl_unlock = "";
 
         async function getTip() {
-            const response = await fetch("https://api.koios.rest/api/v1/address");
+            const response = await fetch('https://koios-api.preprod.dandelion.link/api/v1/address_info', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({_addresses: [localStorage.getItem("smartContractAddress")]})
+            });
             const txData = await response.json();
             console.log(txData);
           }
