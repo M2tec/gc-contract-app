@@ -1,7 +1,6 @@
 var connect_script = {
     "type": "script",
     "exportAs": "connect",
-    "returnURLPattern": "http://localhost:3000/demo/api/dapp",
     "run": {
       "data": {
         "type": "script",

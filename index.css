@@ -80,8 +80,8 @@ a:active {
 
 .connect {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
     width: 250px !important;
     height: 70px !important;
 
@@ -136,7 +136,7 @@ form{
     background-color:#734cad;
 }
 .button:active {
-    position:relative;
+    
     top:1px;
 }
 

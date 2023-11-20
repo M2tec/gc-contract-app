@@ -21,6 +21,8 @@ async function main() {
     const lockInput = document.getElementById("lockInput")
     const unlockInput = document.getElementById("unlockInput")
     const txHashInput = document.getElementById("txHashInput")
+
+    const connectButton = document.getElementById("connectButton")
    
     async function updateUI() {
         error="";
@@ -37,6 +39,7 @@ async function main() {
 
         txHash = txHashInput.value;
         unlock_script.run.buildUnlock.tx.inputs[0].txHash = txHash;
+
         // GameChanger Wallet support arbitrary data returning from script execution, encoded in a redirect URL
         // Head to http:// localhost:3000/doc/api/v2/api.html#returnURLPattern to learn ways how to customize this URL
 
@@ -98,10 +101,46 @@ async function main() {
             unlockButton.innerHTML = "Loading...";
         }
 
+        // Token unlock button
+        // This is the GCScript code, packed into a URL, that GameChanger Wallet will execute
+        // lets try to generate this connection URL by encoding/compressing the gcscript code
+        try{                
+            // GCScript (dapp connector code) will be packed inside this URL    
+            actionUrl_connect   = await buildActionUrl_connect(); 
+        }catch(err){
+            error+=`Failed to build URL.${err?.message||"unknown error"}`
+            console.error(err);
+        }
+
+        if(actionUrl_unlock){
+            errorBox.innerHTML="";
+            connectAction = "window.open('" + actionUrl_connect + "'), '_blank'"
+            connectButton.setAttribute("onclick", connectAction)
+
+            if(localStorage.getItem("wallet_name")){
+                connectButton.innerHTML = localStorage.getItem("wallet_name");
+            }
+
+            connectButton.innerHTML = `Connect`;
+        }else{
+            connectButton.href      = '#';
+            connectButton.innerHTML = "Loading...";
+        }
+
+
         if(resultObj){
             resultsBox.innerHTML=JSON.stringify(resultObj,null,2);
-        }             
 
+
+            if(resultObj.exports.connect){
+                console.log(resultObj.exports.connect.data.name)
+                console.log(resultObj.exports.connect.data.address)
+                
+                localStorage.setItem("wallet_name", resultObj.exports.connect.data.name)
+                localStorage.setItem("wallet_address", resultObj.exports.connect.data.address)
+                connectButton.innerHTML = localStorage.getItem("wallet_name");
+            }
+        }             
     }
 
     async function buildActionUrl_lock(args){
@@ -125,6 +164,21 @@ async function main() {
         const encoded=await gcEncoder(unlock_script);
         return `${gcApiUrl}${encoded}`;
     }
+
+    async function buildActionUrl_connect(args){
+        // This is the GCScript code that GameChanger Wallet will execute
+        // JSON code that will be encoded/compressed inside 'actionUrl'
+
+        // This is a patch to adapt the return URL of the script to the origin that is hosting this html file.
+        // so this way executed scripts data exports can be captured back on dapp side
+        connect_script.returnURLPattern  = window.location.origin +  window.location.pathname;
+        console.log(window.location.origin)
+        console.log(window.location.pathname)
+        const encoded=await gcEncoder(connect_script);
+        return `${gcApiUrl}${encoded}`;
+    }
+
+
 
     updateUI();
 }
