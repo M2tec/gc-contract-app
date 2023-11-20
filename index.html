@@ -20,7 +20,7 @@
 
 <body>
     <button class="button connect" id="connectButton"
-        onclick="window.open('https://beta-preprod-wallet.gamechanger.finance')">Loading...</button>
+        onclick="location.href='https://beta-preprod-wallet.gamechanger.finance'">Loading...</button>
 
     <div class="box">
         <h1>Lock tokens</h1>
@@ -28,14 +28,13 @@
                 datum.. A GameChanger Wallet Dapp Demo. https://gamechanger.finance/</i></p>
 
         <div id="dappConnectorBox">
-            <button class="button" id="lockBtn"
-                onclick="window.open('https://beta-preprod-wallet.gamechanger.finance'), '_blank'">Loading...</button>
+            <button class="button" id="lockBtn" onclick="location.href='https://beta-preprod-wallet.gamechanger.finance'">Loading...</button>
             <input type="text" id="lockInput" class="amountInput" placeholder="Lock number" onchange="main()">
 
             <input type="text" id="txHashInput" class="amountInput" placeholder="txHash to unlock" onchange="main()">
             
             <button class="button" id="unlockBtn"
-                onclick="window.open('https://beta-preprod-wallet.gamechanger.finance'), '_blank'">Loading...</button>
+                onclick="location.href='https://beta-preprod-wallet.gamechanger.finance'">Loading...</button>
             <input type="text" id="unlockInput" class="amountInput" placeholder="Unlock number" onchange="main()">
         </div>
 
