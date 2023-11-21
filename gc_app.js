@@ -7,14 +7,17 @@ function base64Encode(str) {
     const percentToByte = (p) => String.fromCharCode(parseInt(p.slice(1), 16));
     return btoa(encodeURIComponent(str).replace(/%[0-9A-F]{2}/g, percentToByte));
 }
+
 function base64Decode(str) {
     const byteToPercent = (b) => `%${`00${b.charCodeAt(0).toString(16)}`.slice(-2)}`;
     return decodeURIComponent(Array.from(atob(str), byteToPercent).join(""));
 }
+
 //https://github.com/blakeembrey/universal-base64url/blob/master/src/index.ts
 function base64urlDecode(str) {
     return base64Decode(str.replace(/\-/g, "+").replace(/_/g, "/"));
 }
+
 function base64urlEncode(str) {
     return base64Encode(str)
         .replace(/\//g, "_")
@@ -22,18 +25,18 @@ function base64urlEncode(str) {
         .replace(/=+$/, "");
 }
 
-
-
 async function base64ToBytes(base64) {
     const res = await fetch("data:application/octet-stream;base64," + base64);
     return new Uint8Array(await res.arrayBuffer());
 }
+
 function urlSafeBase64Encode(safeBase64) {
     return safeBase64
         .replace(/\+/g, '-') // Convert '+' to '-'
         .replace(/\//g, '_') // Convert '/' to '_'
         .replace(/=+$/, ''); // Remove ending '='
 };
+
 function urlSafeBase64Decode(safeBase64, padding = true) {
     // Add removed at end '='
     let unsafeBase64 = safeBase64
@@ -45,6 +48,7 @@ function urlSafeBase64Decode(safeBase64, padding = true) {
     //return new Buffer(unsafeBase64, 'base64');
     return unsafeBase64;
 };
+
 function compress(string, encoding) {
     const byteArray = new TextEncoder().encode(string);
     const cs = new CompressionStream(encoding);
@@ -53,6 +57,7 @@ function compress(string, encoding) {
     writer.close();
     return new Response(cs.readable).arrayBuffer();
 }
+
 function decompress(byteArray, encoding) {
     const cs = new DecompressionStream(encoding);
     const writer = cs.writable.getWriter();
@@ -62,6 +67,7 @@ function decompress(byteArray, encoding) {
         return new TextDecoder().decode(arrayBuffer);
     });
 }
+
 async function encodeByteArray(array) {
     return new Promise((resolve) => {
         const blob = new Blob([array]);
@@ -105,6 +111,7 @@ const codecs = {
         },
     }
 }
+
 function gcEncoder(obj, codec = 'gzip') {
     return codecs[codec].encoder(obj);
 }

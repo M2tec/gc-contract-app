@@ -20,39 +20,29 @@ async function main() {
 
     const lockInput = document.getElementById("lockInput")
     const unlockInput = document.getElementById("unlockInput")
+
+    const blockfrostInput = document.getElementById("blockfrostInput")
+    const contractInput = document.getElementById("contractInput")
     const txHashInput = document.getElementById("txHashInput")
+    const txHashIndexInput = document.getElementById("txHashIndexInput")
 
     const connectButton = document.getElementById("connectButton")
-
+    
     async function updateUI() {
         error = "";
         actionUrl_lock = "";
 
         actionUrl_unlock = "";
 
-        async function getTip() {
-            const response = await fetch('https://koios-api.preprod.dandelion.link/api/v1/address_info', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({_addresses: [localStorage.getItem("smartContractAddress")]})
-            });
-            const txData = await response.json();
-            console.log(txData);
-          }
-          
-        getTip()
 
-        lockNumber = parseInt(lockInput.value);
-        lock_script.run.dependencies.run.datum.data.fromJSON.obj.fields[0].int = lockNumber;
+        if(localStorage.getItem("blockfrostApiKey")){
+            blockfrostInput.value = localStorage.getItem("blockfrostApiKey")
+        }
 
-        unlockNumber = parseInt(lockInput.value);
-        unlock_script.run.dependencies.run.redeemer.data.fromJSON.obj.fields[0].int = unlockNumber;
+        if(blockfrostInput.value){
+            localStorage.setItem("blockfrostApiKey", blockfrostInput.value );
+        }
 
-        txHash = txHashInput.value;
-        unlock_script.run.buildUnlock.tx.inputs[0].txHash = txHash;
 
         // GameChanger Wallet support arbitrary data returning from script execution, encoded in a redirect URL
         // Head to http:// localhost:3000/doc/api/v2/api.html#returnURLPattern to learn ways how to customize this URL
@@ -88,7 +78,6 @@ async function main() {
         if (actionUrl_lock) {
             errorBox.innerHTML = "";
             lockAction = "location.href='" + actionUrl_lock + "'"
-            console.log(lockAction)
             lockButton.setAttribute("onclick", lockAction)
             lockButton.innerHTML = `<img style="height: 20px" src="lock.svg"></img> Lock`;
         } else {
@@ -130,7 +119,6 @@ async function main() {
         if (actionUrl_connect) {
             errorBox.innerHTML = "";
             connectAction = "location.href='" + actionUrl_connect + "'"
-            console.log(connectAction)
             connectButton.setAttribute("onclick", connectAction)
 
             if (localStorage.getItem("wallet_name")) {
@@ -159,11 +147,16 @@ async function main() {
             }
 
             if (resultObj.exports.Lock_Demo) {
-                sCA = resultObj.exports.Lock_Demo.smartContractAddress
-                console.log(sCA)
-                localStorage.setItem("smartContractAddress", sCA)
+                sCA = resultObj.exports.Lock_Demo.smartContractAddress;
+                console.log(sCA);
+                localStorage.setItem("smartContractAddressExports", sCA);
+                contractInput.value = sCA;
+                
+                lockTxExports = resultObj.exports.Lock_Demo.lockTx;
+                console.log(lockTxExports);
+                localStorage.setItem("lockTxExports", lockTxExports);
+                txHashInput.value = lockTxExports;
             }
-
 
         }
     }
@@ -174,6 +167,10 @@ async function main() {
 
         // This is a patch to adapt the return URL of the script to the origin that is hosting this html file.
         // so this way executed scripts data exports can be captured back on dapp side
+
+        lockNumber = parseInt(lockInput.value);
+        lock_script.run.dependencies.run.datum.data.fromJSON.obj.fields[0].int = lockNumber;
+        
         lock_script.returnURLPattern = window.location.origin + window.location.pathname;
         const encoded = await gcEncoder(lock_script);
         return `${gcApiUrl}${encoded}`;
@@ -185,6 +182,38 @@ async function main() {
 
         // This is a patch to adapt the return URL of the script to the origin that is hosting this html file.
         // so this way executed scripts data exports can be captured back on dapp side
+        async function getLockedUtxo() {
+            const response = await fetch('https://cardano-preprod.blockfrost.io/api/v0/addresses/' + contractInput.value + '/transactions?count=1&order=desc', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Project_id': blockfrostInput.value
+                }
+            });
+            const txData = await response.json();
+            console.log(txData);
+            
+            lockTx = txData[0].tx_hash;
+            console.log(lockTx);
+            localStorage.setItem("lockTx", lockTx);
+            txHashInput.value = lockTx;
+
+            lockTxIndex = txData[0].tx_index;
+            console.log(lockTxIndex);
+            localStorage.setItem("lockTxIndex", parseInt(lockTxIndex));
+            txHashIndexInput.value = lockTxIndex;
+
+          }
+          
+        getLockedUtxo()
+
+        contractInput.value = localStorage.getItem("smartContractAddress");
+        unlock_script.run.buildUnlock.tx.inputs[0].txHash = localStorage.getItem("lockTx");
+        unlock_script.run.buildUnlock.tx.inputs[0].index = parseInt(localStorage.getItem("lockTxIndex"));
+
+        unlockNumber = parseInt(unlockInput.value);      
+        unlock_script.run.dependencies.run.redeemer.data.fromJSON.obj.fields[0].int = unlockNumber;
+
+
         unlock_script.returnURLPattern = window.location.origin + window.location.pathname;
         const encoded = await gcEncoder(unlock_script);
         return `${gcApiUrl}${encoded}`;
@@ -197,8 +226,6 @@ async function main() {
         // This is a patch to adapt the return URL of the script to the origin that is hosting this html file.
         // so this way executed scripts data exports can be captured back on dapp side
         connect_script.returnURLPattern = window.location.origin + window.location.pathname;
-        console.log(window.location.origin)
-        console.log(window.location.pathname)
         const encoded = await gcEncoder(connect_script);
         return `${gcApiUrl}${encoded}`;
     }
