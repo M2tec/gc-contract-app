@@ -69,6 +69,9 @@ let unlock_script = {
                         "consumers": [
                             {
                                 "scriptHashHex": "{get('cache.dependencies.contract.scriptHashHex')}",
+                                "datum": {
+                                    "dataHex": "{get('cache.dependencies.redeemer.dataHex')}"
+                                },
                                 "redeemer": {
                                     "dataHex": "{get('cache.dependencies.redeemer.dataHex')}",
                                     "type": "spend",

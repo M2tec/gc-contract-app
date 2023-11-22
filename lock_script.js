@@ -67,7 +67,8 @@ let lock_script = {
                         "datum": {
                             "datumHashHex": "{get('cache.dependencies.datum.dataHashHex')}"
                         },
-                        "assets": "{get('cache.dependencies.lock')}"
+                        "assets": "{get('cache.dependencies.lock')}",
+                        "idPattern":"locked"
                     }
                 ],
                 "options": {
@@ -110,6 +111,10 @@ let lock_script = {
                 "lockTx": {
                     "type": "macro",
                     "run": "{get('cache.buildLock.txHash')}"
+                },
+                "lockUTXO": {
+                    "type": "macro",
+                    "run": "{get('cache.buildLock.indexMap.output.locked')}"
                 }
             }
         }

@@ -1,4 +1,6 @@
 async function main() {
+    // import {gc,encodings} from '@gamechanger-finance/gc'
+    const {gc,encodings}=window;
     // Dapp <--> GameChanger Wallet connections can use URL redirections
     let actionUrl = "";
     let resultObj = undefined;
@@ -21,7 +23,7 @@ async function main() {
     const lockInput = document.getElementById("lockInput")
     const unlockInput = document.getElementById("unlockInput")
 
-    const blockfrostInput = document.getElementById("blockfrostInput")
+    // const blockfrostInput = document.getElementById("blockfrostInput")
     const contractInput = document.getElementById("contractInput")
     const txHashInput = document.getElementById("txHashInput")
     const txHashIndexInput = document.getElementById("txHashIndexInput")
@@ -34,15 +36,9 @@ async function main() {
 
         actionUrl_unlock = "";
 
-
-        if(localStorage.getItem("blockfrostApiKey")){
-            blockfrostInput.value = localStorage.getItem("blockfrostApiKey")
-        }
-
-        if(blockfrostInput.value){
-            localStorage.setItem("blockfrostApiKey", blockfrostInput.value );
-        }
-
+        txHashInput.value = localStorage.getItem("lockTx");
+        txHashIndexInput.value = parseInt(localStorage.getItem("lockTxIndex"));
+        contractInput.value = localStorage.getItem("smartContractAddress");
 
         // GameChanger Wallet support arbitrary data returning from script execution, encoded in a redirect URL
         // Head to http:// localhost:3000/doc/api/v2/api.html#returnURLPattern to learn ways how to customize this URL
@@ -51,8 +47,8 @@ async function main() {
         try {
             const resultRaw = (new URL(currentUrl)).searchParams.get("result");
             if (resultRaw) {
-                resultObj = await gcDecoder(resultRaw);
-                // avoids current url carrying latest results all the time 
+                resultObj     = await encodings.msg.decoder(resultRaw);
+                //avoids current url carrying latest results all the time 
                 history.pushState({}, '', window.location.pathname);
             }
         } catch (err) {
@@ -61,8 +57,6 @@ async function main() {
         }
 
         // Token lock button
-        // This is the GCScript code, packed into a URL, that GameChanger Wallet will execute
-        // lets try to generate this connection URL by encoding/compressing the gcscript code
         try {
             // GCScript (dapp connector code) will be packed inside this URL    
             actionUrl_lock = await buildActionUrl_lock();
@@ -85,8 +79,6 @@ async function main() {
         }
 
         // Token unlock button
-        // This is the GCScript code, packed into a URL, that GameChanger Wallet will execute
-        // lets try to generate this connection URL by encoding/compressing the gcscript code
         try {
             // GCScript (dapp connector code) will be packed inside this URL    
             actionUrl_unlock = await buildActionUrl_unlock();
@@ -106,8 +98,6 @@ async function main() {
         }
 
         // Token connect button
-        // This is the GCScript code, packed into a URL, that GameChanger Wallet will execute
-        // lets try to generate this connection URL by encoding/compressing the gcscript code
         try {
             // GCScript (dapp connector code) will be packed inside this URL    
             actionUrl_connect = await buildActionUrl_connect();
@@ -149,63 +139,39 @@ async function main() {
             if (resultObj.exports.Lock_Demo) {
                 sCA = resultObj.exports.Lock_Demo.smartContractAddress;
                 console.log(sCA);
-                localStorage.setItem("smartContractAddressExports", sCA);
+                localStorage.setItem("smartContractAddress", sCA);
                 contractInput.value = sCA;
                 
-                lockTxExports = resultObj.exports.Lock_Demo.lockTx;
-                console.log(lockTxExports);
-                localStorage.setItem("lockTxExports", lockTxExports);
-                txHashInput.value = lockTxExports;
+                const lockTxHash = resultObj.exports.Lock_Demo.lockTx;
+                const lockTxIndex = resultObj.exports.Lock_Demo.lockUTXO;
+                console.log({lockTxHash,lockTxIndex});
+                // localStorage.setItem("lockTxExports", lockTxExports);
+                localStorage.setItem("lockTx", lockTxHash);
+                localStorage.setItem("lockTxIndex", lockTxIndex);
+
+                txHashInput.value = localStorage.getItem("lockTx");;
+                txHashIndexInput.value = parseInt(localStorage.getItem("lockTxIndex"));
+                contractInput.value = localStorage.getItem("smartContractAddress");
             }
 
         }
     }
 
     async function buildActionUrl_lock(args) {
-        // This is the GCScript code that GameChanger Wallet will execute
-        // JSON code that will be encoded/compressed inside 'actionUrl'
-
-        // This is a patch to adapt the return URL of the script to the origin that is hosting this html file.
-        // so this way executed scripts data exports can be captured back on dapp side
-
         lockNumber = parseInt(lockInput.value);
         lock_script.run.dependencies.run.datum.data.fromJSON.obj.fields[0].int = lockNumber;
         
         lock_script.returnURLPattern = window.location.origin + window.location.pathname;
-        const encoded = await gcEncoder(lock_script);
-        return `${gcApiUrl}${encoded}`;
+        const url=await gc.encode.url({
+            input:JSON.stringify(lock_script),
+            apiVersion:"2",
+            network:"preprod",
+            //encoding:"gzip",
+          });
+        return url;
     }
 
     async function buildActionUrl_unlock(args) {
-        // This is the GCScript code that GameChanger Wallet will execute
-        // JSON code that will be encoded/compressed inside 'actionUrl'
-
-        // This is a patch to adapt the return URL of the script to the origin that is hosting this html file.
-        // so this way executed scripts data exports can be captured back on dapp side
-        async function getLockedUtxo() {
-            const response = await fetch('https://cardano-preprod.blockfrost.io/api/v0/addresses/' + contractInput.value + '/transactions?count=1&order=desc', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Project_id': blockfrostInput.value
-                }
-            });
-            const txData = await response.json();
-            console.log(txData);
-            
-            lockTx = txData[0].tx_hash;
-            console.log(lockTx);
-            localStorage.setItem("lockTx", lockTx);
-            txHashInput.value = lockTx;
-
-            lockTxIndex = txData[0].tx_index;
-            console.log(lockTxIndex);
-            localStorage.setItem("lockTxIndex", parseInt(lockTxIndex));
-            txHashIndexInput.value = lockTxIndex;
-
-          }
-          
-        getLockedUtxo()
-
         contractInput.value = localStorage.getItem("smartContractAddress");
         unlock_script.run.buildUnlock.tx.inputs[0].txHash = localStorage.getItem("lockTx");
         unlock_script.run.buildUnlock.tx.inputs[0].index = parseInt(localStorage.getItem("lockTxIndex"));
@@ -215,22 +181,25 @@ async function main() {
 
 
         unlock_script.returnURLPattern = window.location.origin + window.location.pathname;
-        const encoded = await gcEncoder(unlock_script);
-        return `${gcApiUrl}${encoded}`;
+        const url=await gc.encode.url({
+            input:JSON.stringify(unlock_script),
+            apiVersion:"2",
+            network:"preprod",
+            //encoding:"gzip",
+          });
+        return url;
     }
 
     async function buildActionUrl_connect(args) {
-        // This is the GCScript code that GameChanger Wallet will execute
-        // JSON code that will be encoded/compressed inside 'actionUrl'
-
-        // This is a patch to adapt the return URL of the script to the origin that is hosting this html file.
-        // so this way executed scripts data exports can be captured back on dapp side
         connect_script.returnURLPattern = window.location.origin + window.location.pathname;
-        const encoded = await gcEncoder(connect_script);
-        return `${gcApiUrl}${encoded}`;
+        const url=await gc.encode.url({
+            input:JSON.stringify(connect_script),
+            apiVersion:"2",
+            network:"preprod",
+            //encoding:"gzip",
+          });;
+        return url;
     }
-
-
 
     updateUI();
 }

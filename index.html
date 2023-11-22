@@ -10,10 +10,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#6d41a1" />
+    <script src="https://cdn.jsdelivr.net/npm/@gamechanger-finance/gc@0.0.2/dist/browser.min.js"></script>
     <script src="connect_script.js"></script>
     <script src="lock_script.js"></script>
     <script src="unlock_script.js"></script>
-    <script src="gc_app.js"></script>
     <script src="index.js" defer></script>
     <link rel="stylesheet" href="index.css">
 </head>
@@ -33,7 +33,7 @@
         </div>
             <h1>Unlock tokens</h1>
         <div id="dappConnectorBox">
-            <input type="text" id="blockfrostInput" class="unlockInput" placeholder="Blockfrost api key" onchange="main()">
+            <!-- <input type="text" id="blockfrostInput" class="unlockInput" placeholder="Blockfrost api key" onchange="main()"> -->
             <input type="text" id="contractInput" class="unlockInput" placeholder="Contract address" onchange="main()">
             <input type="text" id="txHashInput" class="amountInput" placeholder="txHash to unlock" onchange="main()">
             <input type="text" id="txHashIndexInput" class="amountInput" placeholder="txHash index" onchange="main()">
