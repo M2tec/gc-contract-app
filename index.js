@@ -189,9 +189,16 @@ async function main() {
 
     async function buildActionUrl_lock(args) {
         lockNumber = parseInt(lockInput.value);
-        lock_script.run.dependencies.run.datum.data.fromJSON.obj.fields[0].int = lockNumber;
-        
+        lock_script.run.dependencies.run.datum.data.fromJSON.obj.int = lockNumber;
         lock_script.returnURLPattern = window.location.origin + window.location.pathname;
+        const scHex=await generateSC(lockNumber);
+        lock_script.run.dependencies.run.contract.script={
+            "heliosCode": `{hexToStr('${scHex}')}`,
+            "parameters": [
+                "EXAMPLE_DATUM"
+            ],
+            "version": "latest"
+        }
         const url=await gc.encode.url({
             input:JSON.stringify(lock_script),
             apiVersion:"2",
@@ -207,8 +214,16 @@ async function main() {
         unlock_script.run.buildUnlock.tx.inputs[0].index = parseInt(localStorage.getItem("lockTxIndex"));
 
         unlockNumber = parseInt(unlockInput.value);      
-        unlock_script.run.dependencies.run.redeemer.data.fromJSON.obj.fields[0].int = unlockNumber;
+        unlock_script.run.dependencies.run.redeemer.data.fromJSON.obj.int = unlockNumber;
 
+        const scHex=await generateSC(unlockNumber);
+        unlock_script.run.dependencies.run.contract.script={
+            "heliosCode": `{hexToStr('${scHex}')}`,
+            "parameters": [
+                "EXAMPLE_DATUM"
+            ],
+            "version": "latest"
+        }
 
         unlock_script.returnURLPattern = window.location.origin + window.location.pathname;
         const url=await gc.encode.url({

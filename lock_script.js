@@ -16,13 +16,8 @@ let lock_script = {
                         "fromJSON": {
                             "schema": 1,
                             "obj": {
-                                "constructor": 0,
-                                "fields": [
-                                    {
-                                        "int": 42
-                                    }
-                                ]
-                            }
+                                "int": 42
+                              }
                         }
                     }
                 },
