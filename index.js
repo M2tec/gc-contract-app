@@ -1,3 +1,13 @@
+async function store() {
+    const sCA = document.getElementById("contractInput").value
+    const lockTxHash = document.getElementById("txHashInput").value
+    const lockTxIndex = document.getElementById("txHashIndexInput").value   
+    localStorage.setItem("smartContractAddress", sCA);
+    localStorage.setItem("lockTx", lockTxHash);
+    localStorage.setItem("lockTxIndex", lockTxIndex);
+    main()
+}
+
 async function main() {
     // import {gc,encodings} from '@gamechanger-finance/gc'
     const {gc,encodings}=window;
@@ -29,16 +39,36 @@ async function main() {
     const txHashIndexInput = document.getElementById("txHashIndexInput")
 
     const connectButton = document.getElementById("connectButton")
-    
+ 
     async function updateUI() {
         error = "";
         actionUrl_lock = "";
 
         actionUrl_unlock = "";
 
-        txHashInput.value = localStorage.getItem("lockTx");
-        txHashIndexInput.value = parseInt(localStorage.getItem("lockTxIndex"));
+        console.log(contractInput.value);
+        console.log(typeof(contractInput.value));
+
+        
+
+        if(contractInput.value !== "undefined"){
+            console.log("get")
+            contractInput.value = localStorage.getItem("smartContractAddress");
+        }
+        
         contractInput.value = localStorage.getItem("smartContractAddress");
+        
+
+
+        if(txHashInput.value !== "undefined"){
+            console.log("get")
+            txHashInput.value = localStorage.getItem("lockTx");
+        } else {
+            txHashInput.value = localStorage.getItem("lockTx");
+        }
+
+        txHashIndexInput.value = parseInt(localStorage.getItem("lockTxIndex"));
+
 
         // GameChanger Wallet support arbitrary data returning from script execution, encoded in a redirect URL
         // Head to http:// localhost:3000/doc/api/v2/api.html#returnURLPattern to learn ways how to customize this URL

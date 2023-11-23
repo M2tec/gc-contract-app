@@ -29,18 +29,18 @@
 
         <div id="dappConnectorBox">
             <button class="button" id="lockBtn" onclick="location.href='https://beta-preprod-wallet.gamechanger.finance'">Loading...</button>
-            <input type="text" id="lockInput" class="amountInput" placeholder="Lock number" onchange="main()">
+            <input type="text" id="lockInput" class="amountInput" placeholder="Lock number" onchange="store()">
         </div>
             <h1>Unlock tokens</h1>
         <div id="dappConnectorBox">
             <!-- <input type="text" id="blockfrostInput" class="unlockInput" placeholder="Blockfrost api key" onchange="main()"> -->
-            <input type="text" id="contractInput" class="unlockInput" placeholder="Contract address" onchange="main()">
-            <input type="text" id="txHashInput" class="amountInput" placeholder="txHash to unlock" onchange="main()">
-            <input type="text" id="txHashIndexInput" class="amountInput" placeholder="txHash index" onchange="main()">
+            <input type="text" id="contractInput" class="unlockInput" placeholder="Contract address" onchange="store()">
+            <input type="text" id="txHashInput" class="amountInput" placeholder="txHash to unlock" onchange="store()">
+            <input type="text" id="txHashIndexInput" class="amountInput" placeholder="txHash index" onchange="store()">
 
             <button class="button" id="unlockBtn"
                 onclick="location.href='https://beta-preprod-wallet.gamechanger.finance'">Loading...</button>
-            <input type="text" id="unlockInput" class="amountInput" placeholder="Unlock number" onchange="main()">
+            <input type="text" id="unlockInput" class="amountInput" placeholder="Unlock number" onchange="store()">
         </div>
 
         <pre id="errorBox" class="errors"></pre>
