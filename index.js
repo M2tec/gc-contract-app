@@ -9,6 +9,18 @@ async function store() {
 }
 
 async function main() {
+
+
+    function toHex(str) {
+        var result = '';
+        for (var i=0; i<str.length; i++) {
+          result += str.charCodeAt(i).toString(16);
+        }
+        return result;
+      }
+
+    
+    
     // import {gc,encodings} from '@gamechanger-finance/gc'
     const {gc,encodings}=window;
     // Dapp <--> GameChanger Wallet connections can use URL redirections
