@@ -24,7 +24,7 @@ body {
 
 textarea {
     box-sizing: border-box;
-    width: 100%;
+    width: 600px;
     padding: 12px 20px;
     border-radius: 5px;
     border: thin solid #000000; 

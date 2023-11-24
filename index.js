@@ -1,26 +1,43 @@
+// UI components:
+const connectForm = document.getElementById("dappConnectorBox");
+const errorsBox = document.getElementById("errorBox");
+const resultsBox = document.getElementById("resultBox");
+
+const contractInput = document.getElementById("heliosInput")
+
+const lockButton = document.getElementById("lockBtn");
+const unlockButton = document.getElementById("unlockBtn");
+
+const lockInput = document.getElementById("lockInput")
+const unlockInput = document.getElementById("unlockInput")
+
+const contractAddressInput = document.getElementById("contractAddressInput")
+const txHashInput = document.getElementById("txHashInput")
+const txHashIndexInput = document.getElementById("txHashIndexInput")
+
+const connectButton = document.getElementById("connectButton")
+
 async function store() {
-    const sCA = document.getElementById("contractInput").value
-    const lockTxHash = document.getElementById("txHashInput").value
-    const lockTxIndex = document.getElementById("txHashIndexInput").value   
+    let contract = contractInput.value 
+    let sCA = contractAddressInput.value
+    let lockTxHash = txHashInput.value
+    let lockTxIndex = txHashIndexInput.value
+    localStorage.setItem("contract", contract)
     localStorage.setItem("smartContractAddress", sCA);
     localStorage.setItem("lockTx", lockTxHash);
     localStorage.setItem("lockTxIndex", lockTxIndex);
     main()
 }
 
+const generateSC=async () => {
+    const Buffer = (await import("https://cdn.skypack.dev/buffer@6.0.3")).default.Buffer;                        
+    const heliosCode = contractInput.value
+    console.log(heliosCode)
+    return Buffer.from(heliosCode).toString('hex');
+}
+
 async function main() {
 
-
-    function toHex(str) {
-        var result = '';
-        for (var i=0; i<str.length; i++) {
-          result += str.charCodeAt(i).toString(16);
-        }
-        return result;
-      }
-
-    
-    
     // import {gc,encodings} from '@gamechanger-finance/gc'
     const {gc,encodings}=window;
     // Dapp <--> GameChanger Wallet connections can use URL redirections
@@ -28,29 +45,10 @@ async function main() {
     let resultObj = undefined;
     let error = "";
 
-
     // GameChanger Wallet is pure Web3, zero backend procesing of user data. 
     // Dapp connector links are fully processed on end-user browsers.
     const gcApiUrl = "https://beta-preprod-wallet.gamechanger.finance/api/2/run/";
     const currentUrl = window.location.href;
-
-    // UI components:
-    const connectForm = document.getElementById("dappConnectorBox");
-    const errorsBox = document.getElementById("errorBox");
-    const resultsBox = document.getElementById("resultBox");
-
-    const lockButton = document.getElementById("lockBtn");
-    const unlockButton = document.getElementById("unlockBtn");
-
-    const lockInput = document.getElementById("lockInput")
-    const unlockInput = document.getElementById("unlockInput")
-
-    // const blockfrostInput = document.getElementById("blockfrostInput")
-    const contractInput = document.getElementById("contractInput")
-    const txHashInput = document.getElementById("txHashInput")
-    const txHashIndexInput = document.getElementById("txHashIndexInput")
-
-    const connectButton = document.getElementById("connectButton")
  
     async function updateUI() {
         error = "";
@@ -58,19 +56,15 @@ async function main() {
 
         actionUrl_unlock = "";
 
-        console.log(contractInput.value);
-        console.log(typeof(contractInput.value));
+        console.log(contractAddressInput.value);
+        console.log(typeof(contractAddressInput.value));
 
-        
-
-        if(contractInput.value !== "undefined"){
+        if(contractAddressInput.value !== "undefined"){
             console.log("get")
-            contractInput.value = localStorage.getItem("smartContractAddress");
+            contractAddressInput.value = localStorage.getItem("smartContractAddress");
         }
         
-        contractInput.value = localStorage.getItem("smartContractAddress");
-        
-
+        contractAddressInput.value = localStorage.getItem("smartContractAddress");
 
         if(txHashInput.value !== "undefined"){
             console.log("get")
@@ -80,7 +74,6 @@ async function main() {
         }
 
         txHashIndexInput.value = parseInt(localStorage.getItem("lockTxIndex"));
-
 
         // GameChanger Wallet support arbitrary data returning from script execution, encoded in a redirect URL
         // Head to http:// localhost:3000/doc/api/v2/api.html#returnURLPattern to learn ways how to customize this URL
@@ -182,7 +175,7 @@ async function main() {
                 sCA = resultObj.exports.Lock_Demo.smartContractAddress;
                 console.log(sCA);
                 localStorage.setItem("smartContractAddress", sCA);
-                contractInput.value = sCA;
+                contractAddressInput.value = sCA;
                 
                 const lockTxHash = resultObj.exports.Lock_Demo.lockTx;
                 const lockTxIndex = resultObj.exports.Lock_Demo.lockUTXO;
@@ -193,7 +186,7 @@ async function main() {
 
                 txHashInput.value = localStorage.getItem("lockTx");;
                 txHashIndexInput.value = parseInt(localStorage.getItem("lockTxIndex"));
-                contractInput.value = localStorage.getItem("smartContractAddress");
+                contractAddressInput.value = localStorage.getItem("smartContractAddress");
             }
 
         }
@@ -203,7 +196,8 @@ async function main() {
         lockNumber = parseInt(lockInput.value);
         lock_script.run.dependencies.run.datum.data.fromJSON.obj.int = lockNumber;
         lock_script.returnURLPattern = window.location.origin + window.location.pathname;
-        const scHex=await generateSC(lockNumber);
+        const scHex=await generateSC();
+        console.log(scHex);
         lock_script.run.dependencies.run.contract.script={
             "heliosCode": `{hexToStr('${scHex}')}`,
             "version": "latest"
@@ -218,7 +212,7 @@ async function main() {
     }
 
     async function buildActionUrl_unlock(args) {
-        contractInput.value = localStorage.getItem("smartContractAddress");
+        contractAddressInput.value = localStorage.getItem("smartContractAddress");
         unlock_script.run.buildUnlock.tx.inputs[0].txHash = localStorage.getItem("lockTx");
         unlock_script.run.buildUnlock.tx.inputs[0].index = parseInt(localStorage.getItem("lockTxIndex"));
 

@@ -27,7 +27,7 @@
         
         <h1>Contract</h1>
         <div id="dappConnectorBox">
-            <textarea type="text" id="HeliosInput" rows="18" placeholder="Helios script" onchange="store()">
+            <textarea type="text" id="heliosInput" rows="15" placeholder="Helios script" onchange="store()">
 spending MagicNumber
 
 struct Datum {
@@ -46,16 +46,15 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         <h1>Lock tokens</h1>
         <p><i>This contract will lock up some tokens that can only be unlocked providing a number as typed redeemer and
                 datum.. A GameChanger Wallet Dapp Demo. https://gamechanger.finance/</i></p>
-
-        
         <div id="dappConnectorBox">
             <button class="button" id="lockBtn" onclick="location.href='https://beta-preprod-wallet.gamechanger.finance'">Loading...</button>
             <input type="text" id="lockInput" class="amountInput" placeholder="Lock number" onchange="store()">
         </div>
+
             <h1>Unlock tokens</h1>
         <div id="dappConnectorBox">
             <!-- <input type="text" id="blockfrostInput" class="unlockInput" placeholder="Blockfrost api key" onchange="main()"> -->
-            <input type="text" id="contractInput" class="unlockInput" placeholder="Contract address" onchange="store()">
+            <input type="text" id="contractAddressInput" class="unlockInput" placeholder="Contract address" onchange="store()">
             <input type="text" id="txHashInput" class="amountInput" placeholder="txHash to unlock" onchange="store()">
             <input type="text" id="txHashIndexInput" class="amountInput" placeholder="txHash index" onchange="store()">
 
