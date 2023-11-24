@@ -194,9 +194,6 @@ async function main() {
         const scHex=await generateSC(lockNumber);
         lock_script.run.dependencies.run.contract.script={
             "heliosCode": `{hexToStr('${scHex}')}`,
-            "parameters": [
-                "EXAMPLE_DATUM"
-            ],
             "version": "latest"
         }
         const url=await gc.encode.url({
@@ -219,9 +216,6 @@ async function main() {
         const scHex=await generateSC(unlockNumber);
         unlock_script.run.dependencies.run.contract.script={
             "heliosCode": `{hexToStr('${scHex}')}`,
-            "parameters": [
-                "EXAMPLE_DATUM"
-            ],
             "version": "latest"
         }
 
