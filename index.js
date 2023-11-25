@@ -30,7 +30,7 @@ async function store() {
 }
 
 const generateSC=async () => {
-    const Buffer = (await import("https://cdn.skypack.dev/buffer@6.0.3")).default.Buffer;                        
+    const Buffer = gc.utils.Buffer;                  
     const heliosCode = contractInput.value
     console.log(heliosCode)
     return Buffer.from(heliosCode).toString('hex');
