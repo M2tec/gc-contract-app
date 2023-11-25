@@ -1,5 +1,4 @@
 // UI components:
-const connectForm = document.getElementById("dappConnectorBox");
 const errorsBox = document.getElementById("errorBox");
 const resultsBox = document.getElementById("resultBox");
 
@@ -19,11 +18,11 @@ const connectButton = document.getElementById("connectButton")
 
 async function store() {
     let contract = contractInput.value 
-    let sCA = contractAddressInput.value
+    let contractAddress = contractAddressInput.value
     let lockTxHash = txHashInput.value
     let lockTxIndex = txHashIndexInput.value
     localStorage.setItem("contract", contract)
-    localStorage.setItem("smartContractAddress", sCA);
+    localStorage.setItem("contractAddress", contractAddress);
     localStorage.setItem("lockTx", lockTxHash);
     localStorage.setItem("lockTxIndex", lockTxIndex);
     main()
@@ -61,10 +60,10 @@ async function main() {
 
         if(contractAddressInput.value !== "undefined"){
             console.log("get")
-            contractAddressInput.value = localStorage.getItem("smartContractAddress");
+            contractAddressInput.value = localStorage.getItem("contractAddress");
         }
         
-        contractAddressInput.value = localStorage.getItem("smartContractAddress");
+        contractAddressInput.value = localStorage.getItem("contractAddress");
 
         if(txHashInput.value !== "undefined"){
             console.log("get")
@@ -172,30 +171,31 @@ async function main() {
             }
 
             if (resultObj.exports.Lock_Demo) {
-                sCA = resultObj.exports.Lock_Demo.smartContractAddress;
-                console.log(sCA);
-                localStorage.setItem("smartContractAddress", sCA);
-                contractAddressInput.value = sCA;
+                contractAddress = resultObj.exports.Lock_Demo.contractAddress;
+                localStorage.setItem("contractAddress", contractAddress);
+                contractAddressInput.value = contractAddress;
                 
                 const lockTxHash = resultObj.exports.Lock_Demo.lockTx;
-                const lockTxIndex = resultObj.exports.Lock_Demo.lockUTXO;
-                console.log({lockTxHash,lockTxIndex});
-                // localStorage.setItem("lockTxExports", lockTxExports);
                 localStorage.setItem("lockTx", lockTxHash);
+
+                const lockTxIndex = resultObj.exports.Lock_Demo.lockUTXO;
                 localStorage.setItem("lockTxIndex", lockTxIndex);
 
                 txHashInput.value = localStorage.getItem("lockTx");;
                 txHashIndexInput.value = parseInt(localStorage.getItem("lockTxIndex"));
-                contractAddressInput.value = localStorage.getItem("smartContractAddress");
+                contractAddressInput.value = localStorage.getItem("contractAddress");
             }
 
         }
     }
 
     async function buildActionUrl_lock(args) {
+
         lockNumber = parseInt(lockInput.value);
         lock_script.run.dependencies.run.datum.data.fromJSON.obj.int = lockNumber;
+        
         lock_script.returnURLPattern = window.location.origin + window.location.pathname;
+
         const scHex=await generateSC();
         console.log(scHex);
         lock_script.run.dependencies.run.contract.script={
@@ -212,7 +212,7 @@ async function main() {
     }
 
     async function buildActionUrl_unlock(args) {
-        contractAddressInput.value = localStorage.getItem("smartContractAddress");
+        contractAddressInput.value = localStorage.getItem("contractAddress");
         unlock_script.run.buildUnlock.tx.inputs[0].txHash = localStorage.getItem("lockTx");
         unlock_script.run.buildUnlock.tx.inputs[0].index = parseInt(localStorage.getItem("lockTxIndex"));
 
